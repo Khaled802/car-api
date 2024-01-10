@@ -12,9 +12,11 @@ import com.example.demo.domain.AppUser;
 import com.example.demo.domain.AppUserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserDatailsServiceImp implements UserDetailsService {
 	private final AppUserRepository appUserRepository;
 
@@ -24,8 +26,11 @@ public class UserDatailsServiceImp implements UserDetailsService {
 		if (appUser.isEmpty())
 			throw new UsernameNotFoundException("User not found");
 		AppUser curUser = appUser.get();
-		return User.builder().username(curUser.getUsername()).password(curUser.getPassword()).roles(curUser.getRole())
+		
+		var user =  User.builder().username(curUser.getUsername()).password(curUser.getPassword()).roles(curUser.getRole())
 				.build();
+		log.info("UserZ: {}", user);
+		return user;
 	}
 
 }

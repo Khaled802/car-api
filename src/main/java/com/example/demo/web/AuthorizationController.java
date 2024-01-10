@@ -29,7 +29,7 @@ public class AuthorizationController {
 		if (!auth.isAuthenticated()) {
 			return ResponseEntity.badRequest().build();
 		}
-		String token = jwtService.generateToken(auth.getName());
+		String token = jwtService.generateToken(auth.getName(), auth.getAuthorities().toArray()[0].toString());
 		return ResponseEntity.ok(new MessageDto(token));
 	}
 }

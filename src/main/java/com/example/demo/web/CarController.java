@@ -26,7 +26,7 @@ public class CarController {
 	@GetMapping
 	public List<Car> getCars() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		log.info("user: {}", authentication.getName());
+		log.info("user: {}", authentication.getAuthorities());
 		return carRepository.findAll();
 	}
 	

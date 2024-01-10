@@ -14,8 +14,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class JwtService {
 	static final long EXPRIATION_TIME = 86500000;
 	static final String PREFIX = "Bearer";
@@ -27,13 +29,14 @@ public class JwtService {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public String generateToken(String username) {
-		return Jwts.builder().setSubject(username).setExpiration(new Date(EXPRIATION_TIME + System.currentTimeMillis()))
+	public String generateToken(String username, String role) {
+		log.info("role: {}", role);
+		return Jwts.builder().setSubject(username+","+role).setExpiration(new Date(EXPRIATION_TIME + System.currentTimeMillis()))
 				.signWith(getSigningKey()).compact();
 	}
 	
 	
-	public String getUser(HttpServletRequest request) {
+	public String getInfo(HttpServletRequest request) {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (token == null) {
 			return null;
